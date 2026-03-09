@@ -1,10 +1,10 @@
 # SED AI WebApp
 
-Starter monorepo for an SED AI agent web app targeting Google Cloud Run and Google ADK.
+Starter monorepo for an SED AI agent web app targeting Google Cloud Run with OpenAI.
 
 ## Project structure
 
-- `agent/` Python ADK agent service
+- `agent/` Python agent service (OpenAI-backed)
 - `web/` Frontend web app scaffold
 - `infra/` Cloud Run and Terraform deployment scaffolding
 - `scripts/` Local/dev helper scripts
@@ -12,6 +12,6 @@ Starter monorepo for an SED AI agent web app targeting Google Cloud Run and Goog
 
 ## Next steps
 
-1. Implement the Google ADK agent in `agent/src/adk_agent/`.
+1. Implement production tools/guardrails in the agent runtime.
 2. Build the web UX in `web/`.
 3. Wire deploy automation in `infra/` and `.github/workflows/`.
