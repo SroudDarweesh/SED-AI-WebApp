@@ -13,8 +13,8 @@ def health() -> dict[str, str]:
 
 
 @app.post("/chat", response_model=ChatResponse)
-def chat(payload: ChatRequest) -> ChatResponse:
-    response_text = agent_client.generate_reply(
+async def chat(payload: ChatRequest) -> ChatResponse:
+    response_text = await agent_client.generate_reply(
         message=payload.message,
         session_id=payload.session_id,
     )
