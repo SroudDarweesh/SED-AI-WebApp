@@ -5,13 +5,13 @@ Starter monorepo for an SED AI agent web app targeting Google Cloud Run and Goog
 ## Project structure
 
 - `agent/` Python ADK agent service
-- `web/` Frontend web app scaffold
+- `web/` Static frontend chat client
 - `infra/` Cloud Run and Terraform deployment scaffolding
 - `scripts/` Local/dev helper scripts
 - `docs/` Architecture and deployment docs
 
 ## Next steps
 
-1. Implement the Google ADK agent in `agent/src/adk_agent/`.
-2. Build the web UX in `web/`.
-3. Wire deploy automation in `infra/` and `.github/workflows/`.
+1. Connect frontend to deployed backend URL and verify end-to-end chat.
+2. Add CI/CD workflow in `.github/workflows/`.
+3. Expand agent tools/instructions and production observability.

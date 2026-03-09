@@ -18,6 +18,7 @@ export GOOGLE_CLOUD_PROJECT="your-project-id"
 export GOOGLE_CLOUD_LOCATION="us-central1"
 export ADK_MODEL="gemini-2.5-flash"
 export ADK_MOCK_MODE=false
+export CORS_ALLOW_ORIGINS="http://localhost:4173,https://your-frontend-domain"
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8080
 ```
 

@@ -1,10 +1,24 @@
+import os
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.adk_agent.client import AdkAgentClient
 from src.adk_agent.schemas import ChatRequest, ChatResponse
 
 app = FastAPI(title="SED AI Agent Service")
 agent_client = AdkAgentClient()
+
+raw_origins = os.getenv("CORS_ALLOW_ORIGINS", "*")
+allow_origins = [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allow_origins,
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/health")

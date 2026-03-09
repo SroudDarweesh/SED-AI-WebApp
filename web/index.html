@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SED AI Chat</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <h1>SED AI Chat</h1>
+        <p>Cloud Run + Google ADK</p>
+      </header>
+
+      <section class="config-panel">
+        <label for="apiBaseUrl">API Base URL</label>
+        <input id="apiBaseUrl" type="url" placeholder="https://your-service-url.run.app" />
+        <label for="sessionId">Session ID</label>
+        <input id="sessionId" type="text" />
+      </section>
+
+      <section id="messages" class="messages" aria-live="polite"></section>
+
+      <form id="chatForm" class="chat-form">
+        <textarea id="prompt" rows="3" placeholder="Type your message..."></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </main>
+
+    <script src="./main.js"></script>
+  </body>
+</html>
