@@ -23,3 +23,4 @@ uvicorn src.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
 `ADK_MOCK_MODE=true` (default) returns deterministic mock responses.
+`CORS_ALLOW_ORIGINS` defaults to `http://localhost,http://localhost:4173` if unset.

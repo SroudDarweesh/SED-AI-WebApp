@@ -13,5 +13,5 @@ Starter monorepo for an SED AI agent web app targeting Google Cloud Run and Goog
 ## Next steps
 
 1. Backend deployed URL: `https://sed-ai-agent-ye23ulhhjq-uc.a.run.app`.
-2. Add CI/CD workflow in `.github/workflows/`.
-3. Expand agent tools/instructions and production observability.
+2. Deploy `web/` to Cloud Run as `sed-ai-web`.
+3. Restrict backend `CORS_ALLOW_ORIGINS` to the deployed web URL.

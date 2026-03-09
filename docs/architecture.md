@@ -5,7 +5,7 @@
 - `web/` Static frontend chat client
 - `agent/` FastAPI backend service
 - Google ADK runner in backend (`agent/src/adk_agent/client.py`)
-- Cloud Run hosting for backend API
+- Cloud Run hosting for backend API and frontend static site
 - Deployed backend URL: `https://sed-ai-agent-ye23ulhhjq-uc.a.run.app`
 
 ## Request flow
@@ -25,3 +25,6 @@ Backend env variables:
 - `ADK_MODEL=gemini-2.5-flash`
 - `ADK_MOCK_MODE=false`
 - `CORS_ALLOW_ORIGINS=<comma-separated-origins>`
+
+Recommended production CORS:
+- `CORS_ALLOW_ORIGINS=https://your-web-cloud-run-url`

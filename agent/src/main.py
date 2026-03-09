@@ -9,7 +9,8 @@ from src.adk_agent.schemas import ChatRequest, ChatResponse
 app = FastAPI(title="SED AI Agent Service")
 agent_client = AdkAgentClient()
 
-raw_origins = os.getenv("CORS_ALLOW_ORIGINS", "*")
+default_origins = "http://localhost,http://localhost:4173"
+raw_origins = os.getenv("CORS_ALLOW_ORIGINS", default_origins)
 allow_origins = [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
 
 app.add_middleware(

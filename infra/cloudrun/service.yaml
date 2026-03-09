@@ -7,5 +7,18 @@ spec:
     spec:
       containers:
         - image: REGION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG
+          env:
+            - name: GOOGLE_GENAI_USE_VERTEXAI
+              value: "true"
+            - name: GOOGLE_CLOUD_PROJECT
+              value: PROJECT_ID
+            - name: GOOGLE_CLOUD_LOCATION
+              value: us-central1
+            - name: ADK_MODEL
+              value: gemini-2.5-flash
+            - name: ADK_MOCK_MODE
+              value: "false"
+            - name: CORS_ALLOW_ORIGINS
+              value: https://WEB_SERVICE_URL,http://localhost:4173
           ports:
             - containerPort: 8080
