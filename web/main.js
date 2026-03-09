@@ -4,7 +4,7 @@ const promptEl = document.getElementById("prompt");
 const apiBaseUrlEl = document.getElementById("apiBaseUrl");
 const sessionIdEl = document.getElementById("sessionId");
 
-const defaultApiBase = "http://localhost:8080";
+const defaultApiBase = "https://sed-ai-agent-ye23ulhhjq-uc.a.run.app";
 const defaultSessionId = `s-${Math.random().toString(36).slice(2, 10)}`;
 
 apiBaseUrlEl.value = localStorage.getItem("sed_api_base_url") || defaultApiBase;

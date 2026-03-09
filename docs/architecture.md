@@ -6,6 +6,7 @@
 - `agent/` FastAPI backend service
 - Google ADK runner in backend (`agent/src/adk_agent/client.py`)
 - Cloud Run hosting for backend API
+- Deployed backend URL: `https://sed-ai-agent-ye23ulhhjq-uc.a.run.app`
 
 ## Request flow
 
