@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
-from src.adk_agent.client import AgentClient
+from src.adk_agent.client import AdkAgentClient
 from src.adk_agent.schemas import ChatRequest, ChatResponse
 
 app = FastAPI(title="SED AI Agent Service")
-agent_client = AgentClient()
+agent_client = AdkAgentClient()
 
 
 @app.get("/health")
