@@ -20,9 +20,12 @@ export ADK_MODEL="gemini-2.5-flash"
 export ADK_MOCK_MODE=false
 export CORS_ALLOW_ORIGINS="http://localhost:4173,https://your-frontend-domain"
 export CHAT_API_KEY="replace-with-strong-secret"
+export RATE_LIMIT_WINDOW_SECONDS=60
+export RATE_LIMIT_MAX_REQUESTS=30
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
 `ADK_MOCK_MODE=true` (default) returns deterministic mock responses.
 `CORS_ALLOW_ORIGINS` defaults to `http://localhost,http://localhost:4173` if unset.
 `CHAT_API_KEY` is optional; when set, clients must send `X-API-Key` for `POST /chat`.
+Rate limit defaults: `30` chat requests per `60` seconds per client IP.
