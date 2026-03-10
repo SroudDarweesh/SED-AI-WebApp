@@ -12,6 +12,7 @@ python3 -m http.server 4173
 Open `http://localhost:4173` and set API URL:
 - local backend: `http://localhost:8080` (or your current local port)
 - cloud backend: your Cloud Run service URL
+- if backend has `CHAT_API_KEY` enabled, enter the same key in the `API Key` field
 
 ## Deploy to Cloud Run
 
