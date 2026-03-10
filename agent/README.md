@@ -19,8 +19,10 @@ export GOOGLE_CLOUD_LOCATION="us-central1"
 export ADK_MODEL="gemini-2.5-flash"
 export ADK_MOCK_MODE=false
 export CORS_ALLOW_ORIGINS="http://localhost:4173,https://your-frontend-domain"
+export CHAT_API_KEY="replace-with-strong-secret"
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
 `ADK_MOCK_MODE=true` (default) returns deterministic mock responses.
 `CORS_ALLOW_ORIGINS` defaults to `http://localhost,http://localhost:4173` if unset.
+`CHAT_API_KEY` is optional; when set, clients must send `X-API-Key` for `POST /chat`.
