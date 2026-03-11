@@ -10,14 +10,7 @@ python3 -m http.server 4173
 ```
 
 Open `http://localhost:4173` and set API URL:
-- local backend: `http://localhost:8080` (or your current local port)
-- cloud backend: your Cloud Run service URL
-- if backend has `CHAT_API_KEY` enabled, enter the same key in the `API Key` field
-- for Firebase auth:
-  - fill Firebase `apiKey`, `authDomain`, `projectId`
-  - click `Init Firebase`
-  - click `Sign In with Google`
-  - backend must have `REQUIRE_FIREBASE_AUTH=true`
+This UI is production-oriented: config is loaded from runtime env vars.
 
 ## Firebase setup
 
@@ -41,7 +34,8 @@ gcloud builds submit ./web --tag "$WEB_IMAGE"
 gcloud run deploy "$WEB_SERVICE" \
   --image "$WEB_IMAGE" \
   --region "$REGION" \
-  --allow-unauthenticated
+  --allow-unauthenticated \
+  --set-env-vars="^|^WEB_API_BASE_URL=https://sed-ai-agent-768720277381.us-central1.run.app|WEB_API_KEY=|WEB_FIREBASE_API_KEY=YOUR_FIREBASE_API_KEY|WEB_FIREBASE_AUTH_DOMAIN=pure-particle-414515.firebaseapp.com|WEB_FIREBASE_PROJECT_ID=pure-particle-414515"
 ```
 
 After deploy, get web URL:

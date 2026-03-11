@@ -7,5 +7,16 @@ spec:
     spec:
       containers:
         - image: REGION-docker.pkg.dev/PROJECT_ID/REPOSITORY/WEB_IMAGE:TAG
+          env:
+            - name: WEB_API_BASE_URL
+              value: https://AGENT_SERVICE_URL
+            - name: WEB_API_KEY
+              value: ""
+            - name: WEB_FIREBASE_API_KEY
+              value: FIREBASE_WEB_API_KEY
+            - name: WEB_FIREBASE_AUTH_DOMAIN
+              value: PROJECT_ID.firebaseapp.com
+            - name: WEB_FIREBASE_PROJECT_ID
+              value: PROJECT_ID
           ports:
             - containerPort: 8080
