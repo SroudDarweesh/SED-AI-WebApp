@@ -50,6 +50,18 @@ body {
   color: var(--muted);
 }
 
+.auth-controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.auth-status {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
 input,
 textarea,
 button {

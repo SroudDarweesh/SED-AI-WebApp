@@ -18,8 +18,20 @@
         <input id="apiBaseUrl" type="url" placeholder="https://your-service-url.run.app" />
         <label for="apiKey">API Key (optional)</label>
         <input id="apiKey" type="password" placeholder="X-API-Key for protected backend" />
+        <label for="firebaseApiKey">Firebase API Key</label>
+        <input id="firebaseApiKey" type="text" placeholder="AIza..." />
+        <label for="firebaseAuthDomain">Firebase Auth Domain</label>
+        <input id="firebaseAuthDomain" type="text" placeholder="your-project.firebaseapp.com" />
+        <label for="firebaseProjectId">Firebase Project ID</label>
+        <input id="firebaseProjectId" type="text" placeholder="your-project-id" />
         <label for="sessionId">Session ID</label>
         <input id="sessionId" type="text" />
+        <div class="auth-controls">
+          <button id="initFirebaseBtn" type="button">Init Firebase</button>
+          <button id="googleSignInBtn" type="button">Sign In with Google</button>
+          <button id="googleSignOutBtn" type="button">Sign Out</button>
+        </div>
+        <p id="authStatus" class="auth-status">Auth: Not initialized</p>
       </section>
 
       <section id="messages" class="messages" aria-live="polite"></section>
@@ -30,6 +42,6 @@
       </form>
     </main>
 
-    <script src="./main.js"></script>
+    <script type="module" src="./main.js"></script>
   </body>
 </html>

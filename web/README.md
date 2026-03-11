@@ -13,6 +13,20 @@ Open `http://localhost:4173` and set API URL:
 - local backend: `http://localhost:8080` (or your current local port)
 - cloud backend: your Cloud Run service URL
 - if backend has `CHAT_API_KEY` enabled, enter the same key in the `API Key` field
+- for Firebase auth:
+  - fill Firebase `apiKey`, `authDomain`, `projectId`
+  - click `Init Firebase`
+  - click `Sign In with Google`
+  - backend must have `REQUIRE_FIREBASE_AUTH=true`
+
+## Firebase setup
+
+1. In Firebase console, connect your GCP project.
+2. Enable Authentication -> Sign-in method -> Google.
+3. Add your web app and copy Firebase config values (`apiKey`, `authDomain`, `projectId`).
+4. Add your web URLs to authorized domains for Firebase Auth:
+   - local: `localhost`
+   - cloud: your `sed-ai-web` domain
 
 ## Deploy to Cloud Run
 
