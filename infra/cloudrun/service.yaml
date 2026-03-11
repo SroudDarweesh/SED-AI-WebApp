@@ -20,5 +20,9 @@ spec:
               value: "false"
             - name: CORS_ALLOW_ORIGINS
               value: https://WEB_SERVICE_URL,http://localhost:4173
+            - name: REQUIRE_FIREBASE_AUTH
+              value: "true"
+            - name: FIREBASE_PROJECT_ID
+              value: PROJECT_ID
           ports:
             - containerPort: 8080

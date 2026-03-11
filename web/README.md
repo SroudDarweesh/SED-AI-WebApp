@@ -58,5 +58,5 @@ gcloud run deploy sed-ai-agent \
   --image "us-central1-docker.pkg.dev/pure-particle-414515/sed-ai/agent:$(git rev-parse --short HEAD)" \
   --region us-central1 \
   --allow-unauthenticated \
-  --set-env-vars="^|^GOOGLE_GENAI_USE_VERTEXAI=true|GOOGLE_CLOUD_PROJECT=pure-particle-414515|GOOGLE_CLOUD_LOCATION=us-central1|ADK_MODEL=gemini-2.5-flash|ADK_MOCK_MODE=false|CORS_ALLOW_ORIGINS=${WEB_URL}"
+  --set-env-vars="^|^GOOGLE_GENAI_USE_VERTEXAI=true|GOOGLE_CLOUD_PROJECT=pure-particle-414515|GOOGLE_CLOUD_LOCATION=us-central1|ADK_MODEL=gemini-2.5-flash|ADK_MOCK_MODE=false|CORS_ALLOW_ORIGINS=${WEB_URL}|REQUIRE_FIREBASE_AUTH=true|FIREBASE_PROJECT_ID=pure-particle-414515"
 ```
