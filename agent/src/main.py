@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 
 from src.adk_agent.client import AdkAgentClient
 from src.adk_agent.schemas import ChatRequest, ChatResponse
+from src.auth.firebase_auth import require_valid_firebase_user
 
 app = FastAPI(title="SED AI Agent Service")
 agent_client = AdkAgentClient()
@@ -78,10 +79,14 @@ def health() -> dict[str, str]:
 
 
 @app.post("/chat", response_model=ChatResponse)
-async def chat(payload: ChatRequest, _: None = Depends(require_chat_api_key)) -> ChatResponse:
+async def chat(
+    payload: ChatRequest,
+    _: None = Depends(require_chat_api_key),
+    firebase_uid: str | None = Depends(require_valid_firebase_user),
+) -> ChatResponse:
     response_text = await agent_client.generate_reply(
         message=payload.message,
-        session_id=payload.session_id,
+        session_id=f"{firebase_uid}:{payload.session_id}" if firebase_uid else payload.session_id,
     )
     return ChatResponse(
         session_id=payload.session_id,

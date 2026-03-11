@@ -22,6 +22,8 @@ export CORS_ALLOW_ORIGINS="http://localhost:4173,https://your-frontend-domain"
 export CHAT_API_KEY="replace-with-strong-secret"
 export RATE_LIMIT_WINDOW_SECONDS=60
 export RATE_LIMIT_MAX_REQUESTS=30
+export REQUIRE_FIREBASE_AUTH=true
+export FIREBASE_PROJECT_ID="pure-particle-414515"
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
@@ -29,3 +31,4 @@ uvicorn src.main:app --reload --host 0.0.0.0 --port 8080
 `CORS_ALLOW_ORIGINS` defaults to `http://localhost,http://localhost:4173` if unset.
 `CHAT_API_KEY` is optional; when set, clients must send `X-API-Key` for `POST /chat`.
 Rate limit defaults: `30` chat requests per `60` seconds per client IP.
+`REQUIRE_FIREBASE_AUTH=true` enforces `Authorization: Bearer <firebase-id-token>` on `POST /chat`.
