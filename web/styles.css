@@ -1,14 +1,14 @@
 :root {
-  --bg: #f4f6fb;
-  --panel: rgba(255, 255, 255, 0.86);
+  --bg: #f4f7fb;
+  --panel: rgba(255, 255, 255, 0.92);
   --text: #162032;
   --muted: #5f6e84;
-  --line: #d7e0ee;
+  --line: #d6dfec;
   --brand: #0b8f84;
   --brand-strong: #08736b;
   --bot: #eef3ff;
   --user: #dcf6f0;
-  --shadow: 0 24px 56px rgba(16, 27, 48, 0.12);
+  --shadow: 0 14px 36px rgba(16, 27, 48, 0.1);
 }
 
 * {
@@ -21,8 +21,8 @@ body {
   font-family: "Manrope", "Segoe UI", sans-serif;
   color: var(--text);
   background:
-    radial-gradient(700px 500px at -12% -10%, rgba(11, 143, 132, 0.2), transparent 70%),
-    radial-gradient(600px 420px at 110% -15%, rgba(58, 123, 252, 0.16), transparent 70%),
+    radial-gradient(700px 500px at -12% -10%, rgba(11, 143, 132, 0.16), transparent 70%),
+    radial-gradient(600px 420px at 110% -15%, rgba(58, 123, 252, 0.12), transparent 70%),
     var(--bg);
   display: grid;
   place-items: center;
@@ -55,7 +55,7 @@ body {
 }
 
 .app-shell {
-  width: min(960px, 100%);
+  width: min(1080px, 100%);
   display: grid;
   gap: 14px;
 }
@@ -97,9 +97,15 @@ body {
   color: var(--muted);
 }
 
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(290px, 360px) minmax(0, 1fr);
+  gap: 14px;
+}
+
 .config-panel,
 .chat-panel {
-  padding: 16px;
+  padding: 18px;
 }
 
 h2 {
@@ -111,6 +117,23 @@ h2 {
 .config-grid {
   display: grid;
   gap: 7px;
+}
+
+.advanced-config {
+  margin-top: 12px;
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+}
+
+.advanced-config summary {
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.advanced-grid {
+  margin-top: 10px;
 }
 
 .config-grid label {
@@ -161,6 +184,28 @@ button {
 button:hover {
   transform: translateY(-1px);
   background: linear-gradient(135deg, var(--brand-strong), #10988c);
+}
+
+.btn-secondary {
+  background: #e8edf6;
+  color: #334155;
+}
+
+.btn-secondary:hover {
+  background: #dce5f2;
+}
+
+.chat-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chat-head p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .messages {
@@ -224,6 +269,10 @@ textarea {
 
   .app-shell {
     gap: 10px;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
   }
 
   .panel {

@@ -21,39 +21,54 @@
         <h1>Service Enablement Assistant</h1>
         <p class="subtitle">Cloud Run + Google ADK + Firebase Auth</p>
       </header>
+      <section class="workspace">
+        <aside class="config-panel panel">
+          <h2>Setup</h2>
+          <div class="config-grid">
+            <label for="apiBaseUrl">API Base URL</label>
+            <input id="apiBaseUrl" type="url" placeholder="https://your-service-url.run.app" />
+            <label for="apiKey">API Key (optional)</label>
+            <input id="apiKey" type="password" placeholder="X-API-Key for protected backend" />
+            <label for="sessionId">Session ID</label>
+            <input id="sessionId" type="text" />
+          </div>
 
-      <section class="config-panel panel">
-        <h2>Configuration</h2>
-        <div class="config-grid">
-          <label for="apiBaseUrl">API Base URL</label>
-          <input id="apiBaseUrl" type="url" placeholder="https://your-service-url.run.app" />
-          <label for="apiKey">API Key (optional)</label>
-          <input id="apiKey" type="password" placeholder="X-API-Key for protected backend" />
-          <label for="firebaseApiKey">Firebase API Key</label>
-          <input id="firebaseApiKey" type="text" placeholder="AIza..." />
-          <label for="firebaseAuthDomain">Firebase Auth Domain</label>
-          <input id="firebaseAuthDomain" type="text" placeholder="your-project.firebaseapp.com" />
-          <label for="firebaseProjectId">Firebase Project ID</label>
-          <input id="firebaseProjectId" type="text" placeholder="your-project-id" />
-          <label for="sessionId">Session ID</label>
-          <input id="sessionId" type="text" />
-        </div>
-        <div class="auth-controls">
-          <button id="initFirebaseBtn" type="button">Init Firebase</button>
-          <button id="googleSignInBtn" type="button">Sign In with Google</button>
-          <button id="googleSignOutBtn" type="button">Sign Out</button>
-        </div>
-        <p id="authStatus" class="auth-status">Auth: Not initialized</p>
-      </section>
+          <details class="advanced-config">
+            <summary>Firebase Settings</summary>
+            <div class="config-grid advanced-grid">
+              <label for="firebaseApiKey">Firebase API Key</label>
+              <input id="firebaseApiKey" type="text" placeholder="AIza..." />
+              <label for="firebaseAuthDomain">Firebase Auth Domain</label>
+              <input
+                id="firebaseAuthDomain"
+                type="text"
+                placeholder="your-project.firebaseapp.com"
+              />
+              <label for="firebaseProjectId">Firebase Project ID</label>
+              <input id="firebaseProjectId" type="text" placeholder="your-project-id" />
+            </div>
+          </details>
 
-      <section class="chat-panel panel">
-        <h2>Chat</h2>
-        <section id="messages" class="messages" aria-live="polite"></section>
+          <div class="auth-controls">
+            <button id="initFirebaseBtn" class="btn-secondary" type="button">Init Firebase</button>
+            <button id="googleSignInBtn" type="button">Sign In</button>
+            <button id="googleSignOutBtn" class="btn-secondary" type="button">Sign Out</button>
+          </div>
+          <p id="authStatus" class="auth-status">Auth: Not initialized</p>
+        </aside>
 
-        <form id="chatForm" class="chat-form">
-          <textarea id="prompt" rows="3" placeholder="Type your message..."></textarea>
-          <button type="submit">Send</button>
-        </form>
+        <section class="chat-panel panel">
+          <div class="chat-head">
+            <h2>Chat</h2>
+            <p>Ask anything about service enablement workflows.</p>
+          </div>
+          <section id="messages" class="messages" aria-live="polite"></section>
+
+          <form id="chatForm" class="chat-form">
+            <textarea id="prompt" rows="3" placeholder="Type your message..."></textarea>
+            <button type="submit">Send</button>
+          </form>
+        </section>
       </section>
     </main>
 
