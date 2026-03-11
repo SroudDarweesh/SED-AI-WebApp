@@ -4,28 +4,40 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SED AI Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div class="bg-orb orb-a"></div>
+    <div class="bg-orb orb-b"></div>
     <main class="app-shell">
-      <header class="topbar">
-        <h1>SED AI Chat</h1>
-        <p>Cloud Run + Google ADK</p>
+      <header class="topbar panel">
+        <p class="badge">SED AI Agent Workspace</p>
+        <h1>Service Enablement Assistant</h1>
+        <p class="subtitle">Cloud Run + Google ADK + Firebase Auth</p>
       </header>
 
-      <section class="config-panel">
-        <label for="apiBaseUrl">API Base URL</label>
-        <input id="apiBaseUrl" type="url" placeholder="https://your-service-url.run.app" />
-        <label for="apiKey">API Key (optional)</label>
-        <input id="apiKey" type="password" placeholder="X-API-Key for protected backend" />
-        <label for="firebaseApiKey">Firebase API Key</label>
-        <input id="firebaseApiKey" type="text" placeholder="AIza..." />
-        <label for="firebaseAuthDomain">Firebase Auth Domain</label>
-        <input id="firebaseAuthDomain" type="text" placeholder="your-project.firebaseapp.com" />
-        <label for="firebaseProjectId">Firebase Project ID</label>
-        <input id="firebaseProjectId" type="text" placeholder="your-project-id" />
-        <label for="sessionId">Session ID</label>
-        <input id="sessionId" type="text" />
+      <section class="config-panel panel">
+        <h2>Configuration</h2>
+        <div class="config-grid">
+          <label for="apiBaseUrl">API Base URL</label>
+          <input id="apiBaseUrl" type="url" placeholder="https://your-service-url.run.app" />
+          <label for="apiKey">API Key (optional)</label>
+          <input id="apiKey" type="password" placeholder="X-API-Key for protected backend" />
+          <label for="firebaseApiKey">Firebase API Key</label>
+          <input id="firebaseApiKey" type="text" placeholder="AIza..." />
+          <label for="firebaseAuthDomain">Firebase Auth Domain</label>
+          <input id="firebaseAuthDomain" type="text" placeholder="your-project.firebaseapp.com" />
+          <label for="firebaseProjectId">Firebase Project ID</label>
+          <input id="firebaseProjectId" type="text" placeholder="your-project-id" />
+          <label for="sessionId">Session ID</label>
+          <input id="sessionId" type="text" />
+        </div>
         <div class="auth-controls">
           <button id="initFirebaseBtn" type="button">Init Firebase</button>
           <button id="googleSignInBtn" type="button">Sign In with Google</button>
@@ -34,12 +46,15 @@
         <p id="authStatus" class="auth-status">Auth: Not initialized</p>
       </section>
 
-      <section id="messages" class="messages" aria-live="polite"></section>
+      <section class="chat-panel panel">
+        <h2>Chat</h2>
+        <section id="messages" class="messages" aria-live="polite"></section>
 
-      <form id="chatForm" class="chat-form">
-        <textarea id="prompt" rows="3" placeholder="Type your message..."></textarea>
-        <button type="submit">Send</button>
-      </form>
+        <form id="chatForm" class="chat-form">
+          <textarea id="prompt" rows="3" placeholder="Type your message..."></textarea>
+          <button type="submit">Send</button>
+        </form>
+      </section>
     </main>
 
     <script type="module" src="./main.js"></script>
