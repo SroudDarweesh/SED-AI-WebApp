@@ -1,4 +1,5 @@
 import os
+from logging import getLogger
 from threading import Lock
 
 import firebase_admin
@@ -7,9 +8,12 @@ from firebase_admin import auth as firebase_auth
 
 firebase_init_lock = Lock()
 firebase_initialized = False
+logger = getLogger(__name__)
 
 require_firebase_auth = os.getenv("REQUIRE_FIREBASE_AUTH", "false").lower() == "true"
 firebase_project_id = os.getenv("FIREBASE_PROJECT_ID", "").strip() or None
+allow_dev_auth_bypass = os.getenv("ALLOW_DEV_AUTH_BYPASS", "false").lower() == "true"
+dev_auth_bypass_token = os.getenv("DEV_AUTH_BYPASS_TOKEN", "").strip()
 
 
 def _init_firebase_if_needed() -> None:
@@ -31,9 +35,15 @@ def _init_firebase_if_needed() -> None:
 
 def require_valid_firebase_user(
     authorization: str | None = Header(default=None, alias="Authorization"),
+    x_dev_bypass_token: str | None = Header(default=None, alias="X-Dev-Bypass-Token"),
 ) -> str | None:
     if not require_firebase_auth:
         return None
+
+    if allow_dev_auth_bypass and dev_auth_bypass_token:
+        if x_dev_bypass_token and x_dev_bypass_token == dev_auth_bypass_token:
+            logger.warning("Using dev auth bypass token for request")
+            return "dev-bypass-user"
 
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(

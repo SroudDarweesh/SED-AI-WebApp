@@ -1,5 +1,7 @@
 import os
 import time
+import uuid
+from logging import INFO, basicConfig, getLogger
 from threading import Lock
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, status
@@ -9,6 +11,9 @@ from fastapi.responses import JSONResponse
 from src.adk_agent.client import AdkAgentClient
 from src.adk_agent.schemas import ChatRequest, ChatResponse
 from src.auth.firebase_auth import require_valid_firebase_user
+
+basicConfig(level=INFO)
+logger = getLogger(__name__)
 
 app = FastAPI(title="SED AI Agent Service")
 agent_client = AdkAgentClient()
@@ -29,6 +34,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+allow_dev_auth_bypass = os.getenv("ALLOW_DEV_AUTH_BYPASS", "false").lower() == "true"
+if allow_dev_auth_bypass:
+    logger.warning("ALLOW_DEV_AUTH_BYPASS is enabled. Do not use in production.")
 
 
 def require_chat_api_key(x_api_key: str | None = Header(default=None, alias="X-API-Key")) -> None:
@@ -64,18 +73,41 @@ def _is_rate_limited(client_ip: str) -> bool:
 
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
+    request_id = request.headers.get("x-request-id", str(uuid.uuid4()))
+    request.state.request_id = request_id
+
     if request.method == "POST" and request.url.path == "/chat":
         if _is_rate_limited(_get_client_ip(request)):
-            return JSONResponse(
+            response = JSONResponse(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                 content={"detail": "Rate limit exceeded. Please retry later."},
             )
-    return await call_next(request)
+            response.headers["X-Request-ID"] = request_id
+            return response
+
+    started_at = time.time()
+    response = await call_next(request)
+    response.headers["X-Request-ID"] = request_id
+    elapsed_ms = int((time.time() - started_at) * 1000)
+    logger.info(
+        "request path=%s method=%s status=%s elapsed_ms=%s request_id=%s",
+        request.url.path,
+        request.method,
+        response.status_code,
+        elapsed_ms,
+        request_id,
+    )
+    return response
 
 
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/ready")
+def ready() -> dict[str, str]:
+    return {"status": "ready"}
 
 
 @app.post("/chat", response_model=ChatResponse)
