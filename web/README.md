@@ -12,6 +12,12 @@ python3 -m http.server 4173
 Open `http://localhost:4173` and set API URL:
 This UI is production-oriented: config is loaded from runtime env vars.
 
+If Google sign-in fails, the UI now shows a mapped auth banner for common issues:
+- popup blocked
+- unauthorized domain
+- provider not enabled
+- popup closed early
+
 ## Firebase setup
 
 1. In Firebase console, connect your GCP project.
