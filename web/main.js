@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.11.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   GoogleAuthProvider,
   getAuth,
@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
   signInWithRedirect,
   signOut,
-} from "https://www.gstatic.com/firebasejs/11.11.1/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const loginViewEl = document.getElementById("loginView");
 const appViewEl = document.getElementById("appView");
