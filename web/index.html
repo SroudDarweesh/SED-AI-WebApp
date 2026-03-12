@@ -15,36 +15,41 @@
   <body>
     <div class="bg-orb orb-a"></div>
     <div class="bg-orb orb-b"></div>
-    <main class="app-shell">
-      <header class="topbar panel">
+    <main id="loginView" class="auth-shell">
+      <section class="auth-card panel">
         <p class="badge">SED AI Agent Workspace</p>
         <h1>Service Enablement Assistant</h1>
-        <p class="subtitle">Cloud Run + Google ADK + Firebase Auth</p>
+        <p class="subtitle">Sign in with Google to continue.</p>
+        <button id="googleSignInBtn" type="button">Continue with Google</button>
+        <p id="authStatus" class="auth-status">Auth: Not initialized</p>
+        <p id="authBanner" class="auth-banner hidden"></p>
+      </section>
+    </main>
+
+    <main id="appView" class="app-shell hidden">
+      <header class="topbar panel">
+        <div>
+          <p class="badge">SED AI Agent Workspace</p>
+          <h1>Service Enablement Assistant</h1>
+          <p class="subtitle">Cloud Run + Google ADK + Firebase Auth</p>
+        </div>
+        <div class="user-controls">
+          <p id="userChip" class="user-chip">Signed in</p>
+          <button id="googleSignOutBtn" class="btn-secondary" type="button">Sign Out</button>
+        </div>
       </header>
-      <section class="workspace">
-        <aside class="config-panel panel">
-          <h2>Account</h2>
-          <p class="auth-copy">Sign in with your Google account to start a secure chat session.</p>
-          <div class="auth-controls">
-            <button id="googleSignInBtn" type="button">Sign In</button>
-            <button id="googleSignOutBtn" class="btn-secondary" type="button">Sign Out</button>
-          </div>
-          <p id="authStatus" class="auth-status">Auth: Not initialized</p>
-          <p id="authBanner" class="auth-banner hidden"></p>
-        </aside>
 
-        <section class="chat-panel panel">
-          <div class="chat-head">
-            <h2>Chat</h2>
-            <p>Ask anything about service enablement workflows.</p>
-          </div>
-          <section id="messages" class="messages" aria-live="polite"></section>
+      <section class="chat-panel panel">
+        <div class="chat-head">
+          <h2>Chat</h2>
+          <p>Ask anything about service enablement workflows.</p>
+        </div>
+        <section id="messages" class="messages" aria-live="polite"></section>
 
-          <form id="chatForm" class="chat-form">
-            <textarea id="prompt" rows="3" placeholder="Type your message..."></textarea>
-            <button type="submit">Send</button>
-          </form>
-        </section>
+        <form id="chatForm" class="chat-form">
+          <textarea id="prompt" rows="3" placeholder="Type your message..."></textarea>
+          <button type="submit">Send</button>
+        </form>
       </section>
     </main>
     <script src="./runtime-config.js"></script>

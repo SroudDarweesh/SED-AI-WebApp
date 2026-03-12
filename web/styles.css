@@ -60,6 +60,10 @@ body {
   gap: 14px;
 }
 
+.auth-shell {
+  width: min(560px, 100%);
+}
+
 .panel {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -70,6 +74,10 @@ body {
 
 .topbar {
   padding: 20px 22px;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
 }
 
 .badge {
@@ -95,6 +103,18 @@ body {
 .subtitle {
   margin: 0;
   color: var(--muted);
+}
+
+.auth-card {
+  padding: 28px;
+  display: grid;
+  gap: 12px;
+}
+
+.auth-card h1 {
+  margin: 0;
+  font-family: "Space Grotesk", "Manrope", sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
 }
 
 .workspace {
@@ -148,6 +168,25 @@ textarea:focus {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
+}
+
+.user-controls {
+  display: grid;
+  gap: 8px;
+  min-width: 210px;
+}
+
+.user-chip {
+  margin: 0;
+  border-radius: 999px;
+  background: #ecf2ff;
+  color: #31456a;
+  padding: 7px 10px;
+  font-size: 0.82rem;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .auth-status {
@@ -276,6 +315,11 @@ textarea {
 
   .workspace {
     grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .panel {

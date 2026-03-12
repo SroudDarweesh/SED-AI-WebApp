@@ -2,11 +2,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.11.1/fireba
 import {
   GoogleAuthProvider,
   getAuth,
+  getRedirectResult,
   onAuthStateChanged,
-  signInWithPopup,
+  signInWithRedirect,
   signOut,
 } from "https://www.gstatic.com/firebasejs/11.11.1/firebase-auth.js";
 
+const loginViewEl = document.getElementById("loginView");
+const appViewEl = document.getElementById("appView");
 const messagesEl = document.getElementById("messages");
 const chatForm = document.getElementById("chatForm");
 const promptEl = document.getElementById("prompt");
@@ -14,6 +17,7 @@ const googleSignInBtn = document.getElementById("googleSignInBtn");
 const googleSignOutBtn = document.getElementById("googleSignOutBtn");
 const authStatusEl = document.getElementById("authStatus");
 const authBannerEl = document.getElementById("authBanner");
+const userChipEl = document.getElementById("userChip");
 
 const runtimeConfig = window.__SED_CONFIG || {};
 const apiBaseUrl = (runtimeConfig.apiBaseUrl || "").trim().replace(/\/$/, "");
@@ -30,6 +34,17 @@ function setAuthStatus(text) {
   authStatusEl.textContent = `Auth: ${text}`;
 }
 
+function setSignedInView(userLabel) {
+  loginViewEl.classList.add("hidden");
+  appViewEl.classList.remove("hidden");
+  userChipEl.textContent = `Signed in as ${userLabel}`;
+}
+
+function setSignedOutView() {
+  appViewEl.classList.add("hidden");
+  loginViewEl.classList.remove("hidden");
+}
+
 function showAuthBanner(text) {
   authBannerEl.textContent = text;
   authBannerEl.classList.remove("hidden");
@@ -43,10 +58,7 @@ function clearAuthBanner() {
 function mapFirebaseAuthError(error) {
   const message = String(error?.message || "");
   if (message.includes("popup-blocked")) {
-    return "Popup blocked by browser. Allow popups for this site and try again.";
-  }
-  if (message.includes("popup-closed-by-user")) {
-    return "Sign-in popup was closed before completion.";
+    return "Popup blocked by browser. Use redirect sign-in and retry.";
   }
   if (message.includes("unauthorized-domain")) {
     return "This domain is not authorized in Firebase Auth settings.";
@@ -65,10 +77,11 @@ function addMessage(text, role) {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-function initFirebaseFromRuntimeConfig() {
+async function initFirebaseFromRuntimeConfig() {
   const { apiKey, authDomain, projectId } = firebaseConfig;
   if (!apiKey || !authDomain || !projectId) {
     setAuthStatus("Missing Firebase runtime config");
+    showAuthBanner("Missing Firebase config. Contact support.");
     return false;
   }
 
@@ -76,17 +89,25 @@ function initFirebaseFromRuntimeConfig() {
     const app = initializeApp({ apiKey, authDomain, projectId });
     firebaseAuth = getAuth(app);
 
+    try {
+      await getRedirectResult(firebaseAuth);
+    } catch (redirectError) {
+      showAuthBanner(mapFirebaseAuthError(redirectError));
+    }
+
     onAuthStateChanged(firebaseAuth, async (user) => {
       if (!user) {
         firebaseToken = "";
         setAuthStatus("Signed out");
-        showAuthBanner("Sign in to send chat messages.");
+        setSignedOutView();
+        showAuthBanner("Sign in to continue.");
         return;
       }
 
       firebaseToken = await user.getIdToken();
       setAuthStatus(`Signed in as ${user.email || user.uid}`);
       clearAuthBanner();
+      setSignedInView(user.email || user.uid);
     });
 
     setAuthStatus("Ready");
@@ -106,17 +127,15 @@ googleSignInBtn.addEventListener("click", async () => {
 
   try {
     const provider = new GoogleAuthProvider();
-    await signInWithPopup(firebaseAuth, provider);
+    await signInWithRedirect(firebaseAuth, provider);
   } catch (error) {
-    const mappedError = mapFirebaseAuthError(error);
     setAuthStatus("Sign-in failed");
-    showAuthBanner(mappedError);
+    showAuthBanner(mapFirebaseAuthError(error));
   }
 });
 
 googleSignOutBtn.addEventListener("click", async () => {
   if (!firebaseAuth) {
-    setAuthStatus("Firebase not ready");
     return;
   }
 
@@ -124,7 +143,6 @@ googleSignOutBtn.addEventListener("click", async () => {
     await signOut(firebaseAuth);
     clearAuthBanner();
   } catch (error) {
-    setAuthStatus(`Sign-out failed: ${error.message}`);
     showAuthBanner(`Sign-out failed: ${error.message}`);
   }
 });
@@ -140,7 +158,8 @@ chatForm.addEventListener("submit", async (event) => {
 
   if (!firebaseToken) {
     addMessage("Please sign in with Google first.", "bot");
-    showAuthBanner("Authentication required. Click Sign In.");
+    setSignedOutView();
+    showAuthBanner("Authentication required. Sign in to continue.");
     return;
   }
 
@@ -148,7 +167,10 @@ chatForm.addEventListener("submit", async (event) => {
   promptEl.value = "";
 
   try {
-    const headers = { "Content-Type": "application/json", Authorization: `Bearer ${firebaseToken}` };
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${firebaseToken}`,
+    };
     if (apiKey) {
       headers["X-API-Key"] = apiKey;
     }
@@ -162,7 +184,8 @@ chatForm.addEventListener("submit", async (event) => {
     if (!response.ok) {
       const errorText = await response.text();
       if (response.status === 401) {
-        showAuthBanner("Unauthorized. Sign in again or verify backend auth configuration.");
+        setSignedOutView();
+        showAuthBanner("Session expired or unauthorized. Sign in again.");
       }
       throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
@@ -174,6 +197,7 @@ chatForm.addEventListener("submit", async (event) => {
   }
 });
 
+setSignedOutView();
 if (!initFirebaseFromRuntimeConfig()) {
   addMessage("App config missing. Contact support.", "bot");
 }

@@ -18,6 +18,8 @@ If Google sign-in fails, the UI now shows a mapped auth banner for common issues
 - provider not enabled
 - popup closed early
 
+Sign-in uses Firebase redirect flow for better Safari compatibility.
+
 ## Firebase setup
 
 1. In Firebase console, connect your GCP project.
