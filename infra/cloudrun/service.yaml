@@ -4,9 +4,19 @@ metadata:
   name: sed-ai-agent
 spec:
   template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+        run.googleapis.com/execution-environment: gen2
     spec:
+      containerConcurrency: 20
+      timeoutSeconds: 60
       containers:
         - image: REGION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
           env:
             - name: GOOGLE_GENAI_USE_VERTEXAI
               value: "true"
@@ -24,5 +34,9 @@ spec:
               value: "true"
             - name: FIREBASE_PROJECT_ID
               value: PROJECT_ID
+            - name: ALLOW_DEV_AUTH_BYPASS
+              value: "false"
+            - name: DEV_AUTH_BYPASS_TOKEN
+              value: ""
           ports:
             - containerPort: 8080
