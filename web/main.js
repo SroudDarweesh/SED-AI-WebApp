@@ -1,9 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
+  browserLocalPersistence,
   GoogleAuthProvider,
   getAuth,
   getRedirectResult,
   onAuthStateChanged,
+  setPersistence,
   signInWithRedirect,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -29,6 +31,7 @@ let firebaseAuth = null;
 let firebaseToken = "";
 const sessionId = localStorage.getItem("sed_session_id") || defaultSessionId;
 localStorage.setItem("sed_session_id", sessionId);
+const authRedirectFlagKey = "sed_auth_redirect_in_progress";
 
 function setAuthStatus(text) {
   authStatusEl.textContent = `Auth: ${text}`;
@@ -88,9 +91,13 @@ async function initFirebaseFromRuntimeConfig() {
   try {
     const app = initializeApp({ apiKey, authDomain, projectId });
     firebaseAuth = getAuth(app);
+    await setPersistence(firebaseAuth, browserLocalPersistence);
 
     try {
-      await getRedirectResult(firebaseAuth);
+      const redirectResult = await getRedirectResult(firebaseAuth);
+      if (redirectResult?.user) {
+        localStorage.removeItem(authRedirectFlagKey);
+      }
     } catch (redirectError) {
       showAuthBanner(mapFirebaseAuthError(redirectError));
     }
@@ -100,10 +107,17 @@ async function initFirebaseFromRuntimeConfig() {
         firebaseToken = "";
         setAuthStatus("Signed out");
         setSignedOutView();
-        showAuthBanner("Sign in to continue.");
+        if (localStorage.getItem(authRedirectFlagKey) === "true") {
+          showAuthBanner(
+            "Google sign-in returned but the session was not persisted. In Safari, disable Prevent cross-site tracking and retry."
+          );
+        } else {
+          showAuthBanner("Sign in to continue.");
+        }
         return;
       }
 
+      localStorage.removeItem(authRedirectFlagKey);
       firebaseToken = await user.getIdToken();
       setAuthStatus(`Signed in as ${user.email || user.uid}`);
       clearAuthBanner();
@@ -127,8 +141,10 @@ googleSignInBtn.addEventListener("click", async () => {
 
   try {
     const provider = new GoogleAuthProvider();
+    localStorage.setItem(authRedirectFlagKey, "true");
     await signInWithRedirect(firebaseAuth, provider);
   } catch (error) {
+    localStorage.removeItem(authRedirectFlagKey);
     setAuthStatus("Sign-in failed");
     showAuthBanner(mapFirebaseAuthError(error));
   }
@@ -141,6 +157,7 @@ googleSignOutBtn.addEventListener("click", async () => {
 
   try {
     await signOut(firebaseAuth);
+    localStorage.removeItem(authRedirectFlagKey);
     clearAuthBanner();
   } catch (error) {
     showAuthBanner(`Sign-out failed: ${error.message}`);

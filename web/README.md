@@ -19,6 +19,7 @@ If Google sign-in fails, the UI now shows a mapped auth banner for common issues
 - popup closed early
 
 Sign-in uses Firebase redirect flow for better Safari compatibility.
+If Safari returns to the login screen after consent, disable `Prevent cross-site tracking` and retry.
 
 ## Firebase setup
 
