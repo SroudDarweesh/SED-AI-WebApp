@@ -6,6 +6,7 @@ import {
   getRedirectResult,
   onAuthStateChanged,
   setPersistence,
+  signInWithPopup,
   signInWithRedirect,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -61,7 +62,10 @@ function clearAuthBanner() {
 function mapFirebaseAuthError(error) {
   const message = String(error?.message || "");
   if (message.includes("popup-blocked")) {
-    return "Popup blocked by browser. Use redirect sign-in and retry.";
+    return "Popup blocked by browser. Falling back to redirect sign-in.";
+  }
+  if (message.includes("popup-closed-by-user")) {
+    return "Google sign-in popup was closed before completion.";
   }
   if (message.includes("unauthorized-domain")) {
     return "This domain is not authorized in Firebase Auth settings.";
@@ -141,9 +145,18 @@ googleSignInBtn.addEventListener("click", async () => {
 
   try {
     const provider = new GoogleAuthProvider();
-    localStorage.setItem(authRedirectFlagKey, "true");
-    await signInWithRedirect(firebaseAuth, provider);
+    clearAuthBanner();
+    setAuthStatus("Signing in");
+    await signInWithPopup(firebaseAuth, provider);
   } catch (error) {
+    const message = String(error?.message || "");
+    if (message.includes("popup-blocked")) {
+      localStorage.setItem(authRedirectFlagKey, "true");
+      showAuthBanner(mapFirebaseAuthError(error));
+      await signInWithRedirect(firebaseAuth, new GoogleAuthProvider());
+      return;
+    }
+
     localStorage.removeItem(authRedirectFlagKey);
     setAuthStatus("Sign-in failed");
     showAuthBanner(mapFirebaseAuthError(error));
